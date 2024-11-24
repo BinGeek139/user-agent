@@ -3,14 +3,20 @@ import java.util.regex.Pattern;
 
 public class UserAgentParser {
 
-    public static String[] extractOsAndVersion(String userAgent) {
+    /**
+     * Extracts the OS and version as a single string from the user agent.
+     *
+     * @param userAgent the user agent string
+     * @return a string containing OS and version, or "Unknown" if not found
+     */
+    public static String extractOsAndVersion(String userAgent) {
         if (userAgent == null || userAgent.isEmpty()) {
-            return new String[]{"Unknown", "Unknown"};
+            return "Unknown";
         }
 
         String[][] osRegexPatterns = {
                 {"Windows", "Windows NT ([0-9.]+)"},
-                {"Mac OS", "Mac OS X ([0-9_]+)"},
+                {"Mac OS X", "Mac OS X ([0-9_]+)"},
                 {"iOS", "iPhone OS ([0-9_]+)|CPU OS ([0-9_]+)"},
                 {"Android", "Android ([0-9.]+)"},
                 {"Linux", "X11; Linux"},
@@ -27,11 +33,11 @@ public class UserAgentParser {
 
             if (matcher.find()) {
                 String version = matcher.group(1) != null ? matcher.group(1) : "Unknown";
-                return new String[]{osName, version.replace('_', '.')};
+                return osName + " " + version.replace('_', '.');
             }
         }
 
-        return new String[]{"Unknown", "Unknown"};
+        return "Unknown";
     }
 
     public static void main(String[] args) {
@@ -45,9 +51,9 @@ public class UserAgentParser {
         };
 
         for (String userAgent : testUserAgents) {
-            String[] result = extractOsAndVersion(userAgent);
+            String result = extractOsAndVersion(userAgent);
             System.out.println("User Agent: " + userAgent);
-            System.out.println("OS: " + result[0] + ", Version: " + result[1]);
+            System.out.println("OS and Version: " + result);
             System.out.println("------------");
         }
     }
