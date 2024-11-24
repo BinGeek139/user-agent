@@ -57,4 +57,26 @@ public class UserAgentParser {
             System.out.println("------------");
         }
     }
+
+     public static String getDeviceType(String userAgent) {
+        if (userAgent == null || userAgent.isEmpty()) {
+            return "Unknown";
+        }
+
+        // Define Regex for each device type
+        String tabletRegex = "Tablet|iPad|SM-T|Nexus 7|Tab|Kindle";
+        String mobileRegex = "Mobile|Android(?!.*Tablet)|iPhone|Windows Phone";
+        String desktopRegex = "Windows NT|Macintosh|X11";
+
+        // Match against user agent
+        if (Pattern.compile(tabletRegex, Pattern.CASE_INSENSITIVE).matcher(userAgent).find()) {
+            return "Tablet";
+        } else if (Pattern.compile(mobileRegex, Pattern.CASE_INSENSITIVE).matcher(userAgent).find()) {
+            return "Mobile";
+        } else if (Pattern.compile(desktopRegex, Pattern.CASE_INSENSITIVE).matcher(userAgent).find()) {
+            return "Desktop";
+        }
+
+        return "Unknown";
+    }
 }
